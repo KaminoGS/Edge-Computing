@@ -1,0 +1,93 @@
+//Variáveis globais do programa 
+int to = 8;
+int sett = 7;
+float distan;
+int pot = A0;
+float fluxo;
+
+//Funções do programa
+
+void piscaVerde(){
+  digitalWrite(4,HIGH);
+  delay(500);
+  digitalWrite(4,LOW);
+}
+void piscaAmarelo(){
+  digitalWrite(3,HIGH);
+  delay(500);
+  digitalWrite(3,LOW);
+}
+void piscaVermelho(){
+  digitalWrite(2,HIGH);
+  delay(500);
+  digitalWrite(2,LOW);
+}
+float lerFluxo(){
+  float val = analogRead(pot);//Leitura do potenciômetro
+  return (val/1023)*4;//Tratamento do valor lido pelo potenciômetro e retorno da variável tratada
+}
+
+float lerNivel(){
+  	digitalWrite(to,LOW);
+    delayMicroseconds(5);
+    digitalWrite(to,HIGH);
+    delayMicroseconds(10);
+    digitalWrite(to,LOW);
+	float val = pulseIn(sett,HIGH);//Leitura do nível da água
+  	val = val/58;//Transformando o valor em centímetros	
+    return val;
+  
+}
+
+int statusFluxo(float fluxo){
+  int status = 0;
+  if(fluxo == 0){
+    status = 3;
+  }else if(fluxo > 0 && fluxo < 1){
+    status = 2;
+  }else if(fluxo > 1){
+    status = 1;
+  }
+  return status;
+}
+int statusNivel(float nivel){
+  int status = 0;
+  if(nivel >=235){
+    status = 1;
+  }else if(nivel >=130){
+    status = 2;                                                                                                                                  
+  }else if(nivel < 130){
+    status = 3;
+  }
+  return status;
+}
+
+
+void setup()
+{
+ //Configuração do programa
+ pinMode(to,OUTPUT);
+ pinMode(sett,INPUT);
+ pinMode(2,OUTPUT);
+ pinMode(3,OUTPUT);
+ pinMode(4,OUTPUT);
+ pinMode(pot, INPUT);
+ Serial.begin(9600);
+}
+
+void loop()
+{
+  int status = 0;
+  //Recebe o valor dos status do fluxo e nível
+  status += statusFluxo(lerFluxo());
+  status += statusNivel(lerNivel());
+  //Checagem de status e retorno por meio dos leds
+  if(status >= 4){
+  	piscaVermelho();
+  }
+  else if(status == 3){
+    piscaAmarelo();
+  }else{
+    piscaVerde();
+  }
+}
