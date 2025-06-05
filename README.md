@@ -35,4 +35,7 @@ O dispositivo analisa as leituras dos sensores em tempo real e aciona indicadore
 * **Condição:** Quando o fluxo de água for **0** E o nível estiver acima de **(y)**.
 * **Significado:** O bueiro está completamente obstruído e necessita de reparo urgente.
 * **Indicação:** Um **LED Vermelho** ficará piscando.
-
+  
+###Links
+* **Vídeo:**
+* **Simulação:** https://www.tinkercad.com/things/5bR5Phkhm9R-gs?sharecode=qurhPJYzqIoeAr7bV6eBquDAodL0CJqNTPAb8C7lMiE
